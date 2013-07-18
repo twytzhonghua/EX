@@ -1,0 +1,9 @@
+#!/bin/bash
+
+printf "Enter new password:"
+#stty -echo
+echo "test echo is open or not"
+read pass < /dev/tty
+printf "Enter again:"
+read pass2 < /dev/tty
+stty echo

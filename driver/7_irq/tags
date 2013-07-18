@@ -1,0 +1,54 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+DEV_SIZE	irq_test.c	46;"	d	file:
+KERNELDIR	Makefile	/^KERNELDIR ?= \/usr\/src\/linux-headers-$(shell uname -r)\/$/;"	m
+MAX_LEN	app_sample.c	7;"	d	file:
+MISC_NAME	irq_test.c	47;"	d	file:
+PWD	Makefile	/^PWD := $(shell pwd)$/;"	m
+cur_size	irq_test.c	/^	unsigned int cur_size;$/;"	m	struct:my_data	file:	access:public
+devp	irq_test.c	/^struct my_data *devp ;\/\/decalre a structure pointer, then use kmalloc() to allocate space for it $/;"	v	typeref:struct:my_data
+fd	async_read.c	/^int fd;$/;"	v
+input_handler	app_sample.c	/^void input_handler(int num) $/;"	f	signature:(int num)
+kbuf	irq_test.c	/^	char kbuf[DEV_SIZE];$/;"	m	struct:my_data	file:	access:public
+main	app_sample.c	/^main() $/;"	f
+main	async_read.c	/^int main(void)$/;"	f	signature:(void)
+main	write.c	/^int main(void)$/;"	f	signature:(void)
+misc_close	irq_test.c	/^int misc_close(struct inode *node,struct file *filp)$/;"	f	signature:(struct inode *node,struct file *filp)
+misc_dev	irq_test.c	/^static struct miscdevice misc_dev=$/;"	v	typeref:struct:miscdevice	file:
+misc_exit	irq_test.c	/^module_exit(misc_exit);$/;"	v
+misc_exit	irq_test.c	/^static void __exit misc_exit(void)$/;"	f	file:	signature:(void)
+misc_fasync	irq_test.c	/^ static int misc_fasync(int fd, struct file *filp, int on)$/;"	f	file:	signature:(int fd, struct file *filp, int on)
+misc_fops	irq_test.c	/^struct file_operations misc_fops={$/;"	v	typeref:struct:file_operations
+misc_init	irq_test.c	/^module_init(misc_init);$/;"	v
+misc_init	irq_test.c	/^static int __init misc_init(void)$/;"	f	file:	signature:(void)
+misc_open	irq_test.c	/^int misc_open(struct inode *node,struct file *filp)$/;"	f	signature:(struct inode *node,struct file *filp)
+misc_poll	irq_test.c	/^static unsigned int misc_poll(struct file *filp, struct poll_table_struct *wait)$/;"	f	file:	signature:(struct file *filp, struct poll_table_struct *wait)
+misc_read	irq_test.c	/^static ssize_t misc_read(struct file *filp, char __user *buf, size_t count, loff_t *offset)$/;"	f	file:	signature:(struct file *filp, char __user *buf, size_t count, loff_t *offset)
+misc_write	irq_test.c	/^static ssize_t misc_write(struct file *filp, const char __user *buf, size_t count, loff_t *offset)$/;"	f	file:	signature:(struct file *filp, const char __user *buf, size_t count, loff_t *offset)
+my_async_queue	irq_test.c	/^	static struct fasync_struct *my_async_queue;$/;"	m	struct:my_data	typeref:struct:my_data::fasync_struct	file:	access:public
+my_data	irq_test.c	/^struct my_data{$/;"	s	file:
+my_data::cur_size	irq_test.c	/^	unsigned int cur_size;$/;"	m	struct:my_data	file:	access:public
+my_data::kbuf	irq_test.c	/^	char kbuf[DEV_SIZE];$/;"	m	struct:my_data	file:	access:public
+my_data::my_async_queue	irq_test.c	/^	static struct fasync_struct *my_async_queue;$/;"	m	struct:my_data	typeref:struct:my_data::fasync_struct	file:	access:public
+my_data::my_queue	irq_test.c	/^	static wait_queue_head_t my_queue;$/;"	m	struct:my_data	file:	access:public
+my_data::read_flag	irq_test.c	/^	static int read_flag;$/;"	m	struct:my_data	file:	access:public
+my_data::sem	irq_test.c	/^	struct semaphore sem; $/;"	m	struct:my_data	typeref:struct:my_data::semaphore	file:	access:public
+my_data::val	irq_test.c	/^	int val;$/;"	m	struct:my_data	file:	access:public
+my_queue	irq_test.c	/^	static wait_queue_head_t my_queue;$/;"	m	struct:my_data	file:	access:public
+my_signal_fun	async_read.c	/^void my_signal_fun(int signum)$/;"	f	signature:(int signum)
+my_tasklet_func	irq_test.c	/^void my_tasklet_func(unsigned long); \/\/定义一个处理函数:$/;"	p	file:	signature:(unsigned long)
+obj-m	Makefile	/^obj-m := irq_test.o$/;"	m
+read_flag	irq_test.c	/^	static int read_flag;$/;"	m	struct:my_data	file:	access:public
+rtc_async_queue	irq_sample.c	/^static struct fasync_struct *rtc_async_queue;$/;"	v	typeref:struct:fasync_struct	file:
+rtc_dropped_irq	irq_sample.c	/^static void rtc_dropped_irq(unsigned long data)$/;"	f	file:	signature:(unsigned long data)
+rtc_exit	irq_sample.c	/^static void __exit rtc_exit(void)$/;"	f	file:	signature:(void)
+rtc_fasync	irq_sample.c	/^static int rtc_fasync (int fd, struct file *filp, int on)$/;"	f	file:	signature:(int fd, struct file *filp, int on)
+rtc_init	irq_sample.c	/^static int __init rtc_init(void)$/;"	f	file:	signature:(void)
+rtc_interrupt	irq_sample.c	/^static void rtc_interrupt(int irq, void *dev_id, struct pt_regs *regs)$/;"	f	file:	signature:(int irq, void *dev_id, struct pt_regs *regs)
+sem	irq_test.c	/^	struct semaphore sem; $/;"	m	struct:my_data	typeref:struct:my_data::semaphore	file:	access:public
+val	async_read.c	/^int val=0;$/;"	v
+val	irq_test.c	/^	int val;$/;"	m	struct:my_data	file:	access:public

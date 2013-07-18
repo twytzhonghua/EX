@@ -1,0 +1,11 @@
+Welcome to StarDict!
+
+   Press Ctrl+Q to quit. Press Alt+Z to iconify the window or Alt+X to hide the window.
+   Press Alt+C or ESC to clear the input entry's text.
+   Press Space key to move focus to the input entry.
+   If the query word was not found, you can press Tab key to select the first word in the word list.
+   After selected some text, clicking the middle mouse button on the main window's Definition area or on the notification area icon will look up that word.
+   StarDict can match strings against patterns containing '*' (wildcard) and '?' (joker).
+   Input a word beginning with '/' to do a Fuzzy query.
+   When the floating window reports that a word was not found, double clicking will perform a fuzzy query.
+

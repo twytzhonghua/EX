@@ -1,0 +1,1 @@
+cmd_/mnt/hgfs/share_yun/my_proj/1_led/test/my_led.ko := arm-linux-ld -EL  -r -o /mnt/hgfs/share_yun/my_proj/1_led/test/my_led.ko /mnt/hgfs/share_yun/my_proj/1_led/test/my_led.o /mnt/hgfs/share_yun/my_proj/1_led/test/my_led.mod.o

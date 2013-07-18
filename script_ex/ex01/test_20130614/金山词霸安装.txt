@@ -1,0 +1,33 @@
+ Linux下的金山词霸 ----stardict（星际译王） 2012-05-21 17:42:25
+
+分类： LINUX
+
+
+
+在linux下学习的时候，不管是查看帮助文档，还是查阅一些技术资料，都会遇到大量的英文。这个时候，一个合适的词典会帮你很多忙，而stardict就是这样一个强大的词典。废话不说，下面是安装过程。
+
+
+1：安装stardict
+
+
+sudo apt-get install stardict
+
+
+
+2：下载词库
+
+由于默认安装的stardict 没有词库，所以你需要到网上下载，这个很简单，进入该网址即可http://abloz.com/huzheng/stardict-dic/。里面囊括了几乎所有的词库，非常齐全，你可以随意下载。
+
+
+
+3：安装词库
+
+
+第一步：解压下载的词库文件
+tar -xjvf a.tar.bz2
+
+第二步：将解压的文件放入stardict的搜索路径
+sudo mv a /usr/share/stardict/dic
+
+或者更简单：
+sudo  tar -xjvf a.tar.bz2 -C /usr/share/stardict/dic
