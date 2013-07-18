@@ -6,7 +6,7 @@
 *	Thurday:		hardware                      	1.java  2.driver								
 *	Firday:		OS(a chapter) script            	1.java  2.driver								
 *	Saturday:                                 		1.java  2.driver								
-*	Sunday:		system_move()                   	1.java  2.driver								
+*	Sunday:		system_transplant()                   	1.java  2.driver								
 *****************************************************************************************/
 
 
@@ -107,7 +107,7 @@
 			├── 18_Polymorphism//子类向上转型，以父类编译，但是以子类方法执行
 			│   └── SubClass.java// BaseClass ts = new SubClass();//以父类编译，以子类运行  
 
-		--->driver:
+		--->driver:7_irq
 		--->linux_app:
 		--->script:
 7.18--->
@@ -127,7 +127,7 @@
 	Saturday:
 		--->java:
 		--->driver:
-		--->system_move:	
+		--->system_transplant:	
 								
 						
 
@@ -135,7 +135,7 @@
 	Sunday:
 		--->java:
 		--->driver:
-		--->system_move:	
+		--->system_transplant:	
 			
 7.22--->
 	Monda:；
@@ -175,7 +175,7 @@
 	Saturday:
 		--->java:
 		--->driver:
-		--->system_move:	
+		--->system_transplant:	
 								
 						
 
@@ -183,5 +183,5 @@
 	Sunday:
 		--->java:
 		--->driver:
-		--->system_move:	
+		--->system_transplant:	
 							

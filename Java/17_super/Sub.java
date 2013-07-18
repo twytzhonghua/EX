@@ -14,7 +14,7 @@ public class Sub extends Base{
 	public String color;
 
 	public Sub(double size, String name, String color){
-		super(size,name);
+		super(size,name);//父类的构造函数
 		this.color = color;
 	}
 		
