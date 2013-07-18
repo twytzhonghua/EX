@@ -113,6 +113,65 @@
 7.18--->
 	Thursday:
 		--->java:
+		├── 19_instanceof // (a instanceof b) 判断a 是否 属于b类，转型的前提 
+		│   ├── TestInstanceof.class
+		│   └── TestInstanceof.java
+		├── 20_reuse
+									12 class Bird extends Animal{
+		 ~                        | 13     private Animal a;//私有对象 复用父类的方法
+		 ~                        | 14 
+		 ~                        | 15     public Bird(Animal a){
+		 ~                        | 16         this.a = a;
+		 ~                        | 17     }
+		 ~                        | 18 
+		 ~                        | 19     public void breath(){
+		 ~                        | 20         a.breath();
+		 ~                        | 21     }
+		 ~                        | 22  
+		 ~                        | 23     public void fly(){
+		 ~                        | 24         System.out.println("I can fly in the blue sky");
+		 ~                        | 25     
+		 ~                        | 26     }
+		 ~                        | 27     
+		 ~                        | 28 }
+
+		│   ├── Animal.class
+		│   ├── Bird.class
+		│   ├── TestInherit.class
+		│   ├── TestInherit.java
+		│   └── Wolf.class
+		├── 21_data_conversion
+						/*	String intstr = "123";
+		                    |  5         int it = Integer.parseInt(intstr);
+						*/
+	    ├── Primitive2String.class
+		│   └── Primitive2String.java
+		├── 22_toString/*
+		~                        | 15      *toString 是Object的一个方法，所有对象都是Object的子类，故拥有toString方法，
+		~                        | 16      * 如果输出System.out.println(p) 即输出p.toString(),其实就是类的自我描述。
+		~                        | 17      */
+
+		│   ├── Apple.class
+		│   ├── testToString.class
+		│   └── testToString.java
+		├── 23_inner_empty_obj2/*     public static void main(String args[]){
+		~                        | 13         NullAccessStatic na = null;
+		~                        | 14         na.test();
+		~                        | 15         
+		~                        | 16          // 空对象可以访问本类中的static成员或方法，不能访问其他的实例成员，否则会出现异常。
+		~                        | 17         //下面的调用将会出现异常 
+		~                        | 18         na.say(); 
+								*/
+		│   ├── NullAccessStatic.class
+		│   └── NullAccessStatic.java
+		├── 24_Singleton//单例类，类只能被创建一个对象
+		│   ├── Singleton.class
+		│   ├── TestSingletion.class
+		│   └── TestSingletion.java
+		├── 25_final////final修饰的成员变量只能在定义或初始化快中赋值，不能在普通方法中赋值，也不能重复赋值。
+		│   ├── TestFinalLocalVariable.class
+		│   └── TestFinalLocalVariable.java
+		
 		--->driver:
 		--->hardware:
 

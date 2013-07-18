@@ -14,7 +14,7 @@ public class NullAccessStatic{
 		na.test();
 		
 		 // 空对象可以访问本类中的static成员或方法，不能访问其他的实例成员，否则会出现异常。
-		 
+		//下面的调用将会出现异常 
 		na.say();
 	
 	}
