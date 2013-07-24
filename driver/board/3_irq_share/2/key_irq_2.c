@@ -17,25 +17,26 @@
 
 
 #define DEV_SIZE 100
-#define  MISC_NAME "chardrv_test"
+#define  MISC_NAME "chardrv_test2"
 
 struct my_data{
 		
 	char kbuf[DEV_SIZE];
 	unsigned int cur_size;
 	int val;
+	int dev_id;
 	struct semaphore sem; 
 	wait_queue_head_t my_queue;
 	int read_flag;
 };
 
-struct my_data *devp;
+struct my_data *devp1;
 
 
 
 static irqreturn_t my_irq(int irq, void* dev_id)
 {
-	printk("This is my_irq = %d\n", irq);
+	printk("This is my_irq = %d, *dev_id = %d\n", irq,devp1->dev_id);
 	return IRQ_HANDLED;
 }
 
@@ -43,16 +44,13 @@ static irqreturn_t my_irq(int irq, void* dev_id)
 
 static int misc_open(struct inode *node,struct file *filp)
 {
-	int ret1 = 0, ret2 = 0, ret3 = 0, ret4 = 0;
-	filp->private_data = devp; // give the structure pointer to filp->private_data
+	int ret1 = 0;
+	filp->private_data = devp1; // give the structure pointer to filp->private_data
 	
 		//IRQF_TRIGGER_FALLING: 下降沿触发中断
-	ret1 = request_irq(IRQ_EINT0,my_irq,IRQF_TRIGGER_FALLING,"S2",NULL);
-	ret2 = request_irq(IRQ_EINT2,my_irq,IRQF_TRIGGER_FALLING,"S3",NULL);
-	ret3 = request_irq(IRQ_EINT11,my_irq,IRQF_TRIGGER_FALLING,"S4",NULL);
-	ret4 = request_irq(IRQ_EINT19,my_irq,IRQF_TRIGGER_FALLING,"S5",NULL);
+	ret1 = request_irq(IRQ_EINT0,my_irq,IRQF_TRIGGER_FALLING | IRQF_SHARED,"anotherS2",&devp1->dev_id);
 
-	if(ret1 || ret2 || ret3 || ret4 )
+	if(ret1)
 	{
 		printk("request_irq error\n");
 		return -1;
@@ -169,7 +167,7 @@ struct file_operations misc_fops={
 	.poll = misc_poll,
 };
 
-static struct miscdevice misc_dev=
+static struct miscdevice misc_dev1=
 {
 	.minor = MISC_DYNAMIC_MINOR,//Dynamically allocate minor device
 	.name = MISC_NAME,
@@ -187,21 +185,22 @@ static int __init test_init(void)
 {
 	int ret;
 	
-	devp = kmalloc(sizeof(struct my_data),GFP_KERNEL);//allocate space for devp
-	if(!devp)
+	devp1 = kmalloc(sizeof(struct my_data),GFP_KERNEL);//allocate space for devp
+	if(!devp1)
 	{
 		printk("kmalloc failed!\n");
 		return -ENOMEM;
 	}
 
-	memset(devp,0,sizeof(struct my_data));
+	memset(devp1,0,sizeof(struct my_data));
 
-	init_waitqueue_head(&devp->my_queue);
+	init_waitqueue_head(&devp1->my_queue);
 
+	devp1->dev_id = 200;
 	/*
 	*register the miscdevice
 	*/
-	ret = misc_register(&misc_dev);
+	ret = misc_register(&misc_dev1);
 	if(ret)
 	{
 		printk("misc_register error\n");
@@ -210,7 +209,7 @@ static int __init test_init(void)
 	}
 	
 
-	sema_init(&devp->sem,1);
+	sema_init(&devp1->sem,1);
 	
 	return ret;
 	
@@ -219,11 +218,9 @@ static int __init test_init(void)
 
 static void __exit test_exit(void)
 {
-	free_irq(IRQ_EINT0,NULL);
-	free_irq(IRQ_EINT2,NULL);
-	free_irq(IRQ_EINT11,NULL);
-	free_irq(IRQ_EINT19,NULL);
-	kfree(devp);
+	free_irq(IRQ_EINT0,&devp1->dev_id);
+	kfree(devp1);
+
 	printk("goodbye kernel\n");
 }
 

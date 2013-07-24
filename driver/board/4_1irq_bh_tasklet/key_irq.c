@@ -27,6 +27,7 @@ struct my_data{
 	struct semaphore sem; 
 	wait_queue_head_t my_queue;
 	int read_flag;
+	struct tasklet_struct albert_tasklet; //定义tasklet结构体
 };
 
 struct my_data *devp;
@@ -36,9 +37,14 @@ struct my_data *devp;
 static irqreturn_t my_irq(int irq, void* dev_id)
 {
 	printk("This is my_irq = %d\n", irq);
+	tasklet_schedule(&devp->albert_tasklet);
 	return IRQ_HANDLED;
 }
 
+ void albert_bh_irq_func(unsigned long data)
+ {
+ 	printk("hello albert, you are in bh_irq!, data[%d]\n", (int)data);
+ }
 
 
 static int misc_open(struct inode *node,struct file *filp)
@@ -208,7 +214,8 @@ static int __init test_init(void)
 		return ret;
 	
 	}
-	
+	 
+	tasklet_init(&devp->albert_tasklet, albert_bh_irq_func, (unsigned long)123);
 
 	sema_init(&devp->sem,1);
 	

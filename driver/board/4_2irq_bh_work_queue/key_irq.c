@@ -14,7 +14,7 @@
 #include <linux/miscdevice.h>/*For struct miscdevice ...*/
 #include <linux/types.h>/*for standard types (like size_t) */
 #include <linux/kernel.h>/*For printk/panic/...*/
-
+#include <linux/workqueue.h> //for irq_bh work queue 
 
 #define DEV_SIZE 100
 #define  MISC_NAME "chardrv_test"
@@ -27,6 +27,9 @@ struct my_data{
 	struct semaphore sem; 
 	wait_queue_head_t my_queue;
 	int read_flag;
+	
+	struct workqueue_struct *albert_wq; //1.定义工作队列
+	struct work_struct albert_work; //2定义work结构体
 };
 
 struct my_data *devp;
@@ -36,8 +39,14 @@ struct my_data *devp;
 static irqreturn_t my_irq(int irq, void* dev_id)
 {
 	printk("This is my_irq = %d\n", irq);
+	queue_work(devp->albert_wq ,&devp->albert_work); //3调度任务
 	return IRQ_HANDLED;
 }
+
+ void albert_bh_irq_func(unsigned long data)
+ {
+ 	printk("hello albert, you are in bh_irq!, data[%d]\n", (int)data);
+ }
 
 
 
@@ -209,6 +218,9 @@ static int __init test_init(void)
 	
 	}
 	
+	devp->albert_wq = create_workqueue("albert"); //1初始化工作对列
+	INIT_WORK(&devp->albert_work, albert_bh_irq_func); //2初始化work结构体
+	
 
 	sema_init(&devp->sem,1);
 	
@@ -223,6 +235,8 @@ static void __exit test_exit(void)
 	free_irq(IRQ_EINT2,NULL);
 	free_irq(IRQ_EINT11,NULL);
 	free_irq(IRQ_EINT19,NULL);
+	flush_workqueue(devp->albert_wq); //4刷新工作队列
+	destroy_workqueue(devp->albert_wq); //4注销工作队列
 	kfree(devp);
 	printk("goodbye kernel\n");
 }
