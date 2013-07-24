@@ -5,6 +5,8 @@ all:
 
 clean:
 	make -C $(KERN_DIR) M=`pwd` modules clean
-	rm -rf modules.order
+	rm -rf *odules.*
+	rm -rf Module.*
+	rm -rf *.bak
 
-obj-m	+= misc_led.o
+obj-m	+= key_irq.o

@@ -2,8 +2,19 @@
 #include <linux/wait.h>
 #include <linux/init.h>
 #include <linux/interrupt.h>
-#include <linux/semaphore.h>
+#include <asm-arm/semaphore.h>
 #include <linux/slab.h>
+#include <asm/uaccess.h>
+#include <asm/irq.h>
+#include <asm/arch/regs-gpio.h>
+#include <linux/irq.h>
+#include <asm/hardware.h>
+#include <linux/poll.h>
+#include <linux/fs.h>/*For struct file_operations*/
+#include <linux/miscdevice.h>/*For struct miscdevice ...*/
+#include <linux/types.h>/*for standard types (like size_t) */
+#include <linux/kernel.h>/*For printk/panic/...*/
+
 
 #define DEV_SIZE 100
 #define  MISC_NAME "chardrv_test"
@@ -14,29 +25,41 @@ struct my_data{
 	unsigned int cur_size;
 	int val;
 	struct semaphore sem; 
-	static wait_queue_head_t my_queue;
-	static int read_flag;
+	wait_queue_head_t my_queue;
+	int read_flag;
 };
+
+struct my_data *devp;
+
+
+
+static irqreturn_t my_irq(int irq, void* dev_id)
+{
+	printk("This is my_irq = %d\n", irq);
+	return IRQ_HANDLED;
+}
+
+
 
 static int misc_open(struct inode *node,struct file *filp)
 {
-	int ret;
+	int ret1 = 0, ret2 = 0, ret3 = 0, ret4 = 0;
 	filp->private_data = devp; // give the structure pointer to filp->private_data
 	
 		//IRQF_TRIGGER_FALLING: 下降沿触发中断
-	ret = request_irq(EINT0,my_irq,IRQF_TRIGGER_FALLING,"S2",NULL);
-/*	ret = request_irq(EINT2,my_irq,IRQF_TRIGGER_FALLING,"S3",NULL);
-	ret = request_irq(EINT11,my_irq,IRQF_TRIGGER_FALLING,"S4",NULL);
-	ret = request_irq(EINT19,my_irq,IRQF_TRIGGER_FALLING,"S5",NULL);
-*/
-	if(ret)
+	ret1 = request_irq(IRQ_EINT0,my_irq,IRQF_TRIGGER_FALLING,"S2",NULL);
+	ret2 = request_irq(IRQ_EINT2,my_irq,IRQF_TRIGGER_FALLING,"S3",NULL);
+	ret3 = request_irq(IRQ_EINT11,my_irq,IRQF_TRIGGER_FALLING,"S4",NULL);
+	ret4 = request_irq(IRQ_EINT19,my_irq,IRQF_TRIGGER_FALLING,"S5",NULL);
+
+	if(ret1 || ret2 || ret3 || ret4 )
 	{
 		printk("request_irq error\n");
 		return -1;
 	}
 	
 	printk("This is misc_open\n");
-	return ret;
+	return ret1;
 }
 
 
@@ -47,18 +70,14 @@ static int misc_close(struct inode *node,struct file *filp)
 	return 0;
 }
 
-static irqreturn_t my_irq(int irq, void* dev_id)
-{
-	printk("This is my_irq = %d\n", irq);
-}
 
 static ssize_t misc_read(struct file *filp, char __user *buf, size_t count, loff_t *offset)
 {
-	int ret;
+	int ret = 0;
 	struct my_data *dev = filp->private_data;
 
 
-	if(wait_event_interruptible(my_queue,dev->read_flag!=0))
+	if(wait_event_interruptible(dev->my_queue,dev->read_flag!=0))
 	{
 		return -EBUSY;
 	}
@@ -91,7 +110,7 @@ static ssize_t misc_read(struct file *filp, char __user *buf, size_t count, loff
 
 static ssize_t misc_write(struct file *filp, const char __user *buf, size_t count, loff_t *offset)
 {
-	int ret;
+	int ret = 0;
 	
 
 	struct my_data *dev = filp->private_data;
@@ -118,7 +137,7 @@ static ssize_t misc_write(struct file *filp, const char __user *buf, size_t coun
 
 	dev->read_flag = 1;
 
-	wake_up_interruptible(&my_queue);
+	wake_up_interruptible(&dev->my_queue);
 
 	printk("sleepping is over, you can write \n");	
 	return ret;
@@ -126,7 +145,7 @@ static ssize_t misc_write(struct file *filp, const char __user *buf, size_t coun
 
 unsigned int misc_poll(struct file *filp, struct poll_table_struct *table)
 {
-	struct _test_t *dev = filp->private_data;
+	struct my_data *dev = filp->private_data;
 	unsigned int mask = 0;
 
 	poll_wait(filp, &dev->my_queue, table);
@@ -164,7 +183,7 @@ static struct miscdevice misc_dev=
 *EINT11
 *EINT19
 */
-static init __init test_init()
+static int __init test_init(void)
 {
 	int ret;
 	
@@ -177,7 +196,7 @@ static init __init test_init()
 
 	memset(devp,0,sizeof(struct my_data));
 
-	init_waitqueue_head(&my_queue);
+	init_waitqueue_head(&devp->my_queue);
 
 	/*
 	*register the miscdevice
@@ -198,9 +217,12 @@ static init __init test_init()
 
 }
 
-static void __exit test_exit()
+static void __exit test_exit(void)
 {
-	free_irq(EINT0,NULL);
+	free_irq(IRQ_EINT0,NULL);
+	free_irq(IRQ_EINT2,NULL);
+	free_irq(IRQ_EINT11,NULL);
+	free_irq(IRQ_EINT19,NULL);
 	printk("goodbye kernel\n");
 }
 
