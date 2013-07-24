@@ -71,7 +71,6 @@ int misc_close(struct inode *node,struct file *filp)
 
 static ssize_t misc_read(struct file *filp, char __user *buf, size_t count, loff_t *offset)
 {
-	int ret;
 	struct my_data *dev = filp->private_data;
 	
 	
@@ -86,13 +85,13 @@ static ssize_t misc_read(struct file *filp, char __user *buf, size_t count, loff
 	}
 	else
 	 {
-		ret = -EFAULT;
+		return  -EFAULT;
 		printk("Kernel test_read failed\n");
 	}
 	
 	
 
-	return ret;
+	return count;
 }
 
 
@@ -105,7 +104,6 @@ static ssize_t misc_read(struct file *filp, char __user *buf, size_t count, loff
 *******************************************************************************************/
 static ssize_t misc_write(struct file *filp, const char __user *buf, size_t count, loff_t *offset)
 {
-	int ret;
 	struct my_data *dev = filp->private_data;
 	
 	if(!copy_from_user(&dev->val,(void *)buf,count))
@@ -115,7 +113,7 @@ static ssize_t misc_write(struct file *filp, const char __user *buf, size_t coun
 	}
 	else 
 	{
-		ret = -EFAULT;
+		return  -EFAULT;
 	}
 	
 	
@@ -151,7 +149,7 @@ static ssize_t misc_write(struct file *filp, const char __user *buf, size_t coun
 	}
 
 
-	return ret;
+	return count;
 }
 
 
