@@ -4,3 +4,9 @@
 *bak
 *backup
 *~
+*.ko
+*.o
+*.mod.*
+*.cmd
+Module.*
+
