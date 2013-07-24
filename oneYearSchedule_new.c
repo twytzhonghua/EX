@@ -10,7 +10,7 @@ Work and study schedule:
 	--->Touch:		7月～10月
 	--->camera:		12月～1月
 	--->USB:		3月
-
+	--->Audio:		5月～6月
 
 2.BootLoader/Recovery/Ramdisk 汇编：
 	--->BootLoader 和 汇编:		11月
