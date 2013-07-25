@@ -1,6 +1,11 @@
 " history存储长度。  
 set history=1000 
 
+"支持windows汉字
+let &termencoding=&encoding
+set fileencodings=utf-8,gb18030,gbk,gb2312,big5
+
+
 "启动自动补全  
 filetype plugin indent on 
  
@@ -85,7 +90,7 @@ set tags+=$MAG/tags "add new tags file(刚刚生成tags的路径，在ctags -R �
 "-- WinManager setting --
 let g:winManagerWindowLayout='FileExplorer|TagList' " 设置我们要管理的插件
 "let g:persistentBehaviour=0 "如果所有编辑文件都关闭了，退出vim
-nmap wm :WMToggle<cr>
+"nmap wm :WMToggle<cr>
 
 " -- MiniBufferExplorer -- 
 let g:miniBufExplMapWindowNavVim = 1 " 按下Ctrl+h/j/k/l，可以切换到当前窗口的上下左右窗口
@@ -93,6 +98,18 @@ let g:miniBufExplMapWindowNavArrows = 1 " 按下Ctrl+箭头，可以切换到当
 let g:miniBufExplMapCTabSwitchBufs = 1 " 启用以下两个功能：Ctrl+tab移到下一个buffer并在当前窗口打开；Ctrl+Shift+tab移到上一个buffer并在当前窗口打开；ubuntu好像不支持
 "let g:miniBufExplMapCTabSwitchWindows = 1 "启用以下两个功能：Ctrl+tab移到下一个窗口；Ctrl+Shift+tab移到上一个窗口；ubuntu好像不支持
 let g:miniBufExplModSelTarget = 1 " 不要在不可编辑内容的窗口（如TagList窗口）中打开选中的buffer
+
+"<F1> 显示minibuffer
+map <F1> :WMToggle<CR><CR>
+imap <F1> <ESC>:WMToggle<CR><CR>
+
+
+"<F4> 鼠标可视模式
+map <F4> :set mouse=v<CR><CR>
+map <F3> :set mouse=a<CR><CR>
+
+imap <F4> <ESC>:set mouse=v<CR><CR>
+imap <F3> <ESC>:set mouse=a<CR><CR>
 
 "在vim配置文件/home/user/.vimrc中加入如下的配置：
 "-- QuickFix setting --
